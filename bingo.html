@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>BR Keynote Bingo!</title>
+        <meta name="description" content="Play BR Keynote Bingo!" />
+
+        <meta property="og:title" content="BR Keynote Bingo!" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Apple BR Bingo!" />
+        <meta property="og:url" content="https://dubdubbingo.github.io/" />
+        <meta property="og:description" content="It’s time to play Apple Keynote Bingo!" />
+        <meta property="og:image" content="static/images/share.jpg" />
+
+        <link rel="stylesheet" href="static/styles/styles.css">
+        <link rel="shortcut icon" type="image/png" href="static/images/favicon.png">
+        <link rel="apple-touch-icon-precomposed" href="static/images/apple-touch-icon.png">
+
+        <script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-29707119-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <header>
+                <h1 class="my-4 display-4">Apple Keynote Bingo!</h1>
+                <h2 class="mb-4 h5">Play along</h2>
+            </header>
+
+            <div id="bingo">
+                <h1 class="my-4 display-1">BINGO!</h1>
+                <a class="btn btn-dark" href="?">Play again?</a>
+            </div>
+
+            <table id="bingoCard" class="table-responsive my-4 mx-auto">
+                <tbody id="playCard">
+                </tbody>
+            </table>
+
+            <footer>
+                <a class="btn btn-outline-dark mr-2" href="?">New Bingo Card</a>
+                <p class="mt-4 small">
+                    The most important thing is to keep the most important thing the most important thing. We love you, Rocketeers.
+                </p>
+            </footer>
+        </div>
+
+        <script>
+            strings = [
+                "AR Goggles that make you look like a frog",
+                "New MacBook Air - Our Best MacBook Yet",
+                "iOS 17 with support for AR headsets",
+                "watchOS 8 to help watches support AR headsets",
+                "Tim Cook’s pronunciations of “sili-cun” burns my ears",
+                "Skit about WFH",
+                "Group messaging stops sucking",
+                "Augmented reality glasses (NOT goggles)",
+                "“bezel”",
+                "“Developers love the App Store, providing that there is no follow up discussion on the matter”",
+                "Tim Cook",
+                "Craig Federighi",
+                "Tim Cook’s thin, watery smile",
+                "Advertisement for a product",
+                "Here comes the money talk!",
+                "A new app that looks OK, but nothing special",
+                "“We hope you like it”",
+                "“We think it’s great”",
+                "“Here it is”",
+                "“Let me show it to you”",
+                "“Boom!/Bam!” or other onomatopoeic word",
+                "“Billion’",
+                "Slack Comment: “oooh” followed by a bunch of emojis",
+                "Disappointment as all the rumours turn out to be EXACTLY true",
+                "Nice independent software maker totally undermined by a new feature",
+                "Smiling children in an emerging market play with an iPad",
+                "Stealthy upgrade to a product not mentioned in the Keynote",
+                "Stealthy downgrade to MacBook to retain price point",
+                "Price point slightly too high, but not high enough to stop you buying",
+                "EXCRUCIATING third party demo",
+                "“I’ll never get used to that!” *gets used to it almost immediately*",
+                "Poorly implemented cloud features",
+                "Home automate ALL THE THINGS",
+                "“Partnership”",
+                "“It’s available in beta, right now”",
+                "Everyone loses their shit about something technical",
+                "Apple Pay stats",
+                "Dreadful skit",
+                "Enterprise! Woo yeah! *rolls eyes*",
+                "Super-earnest medical research framework",
+                "Beyond-acceptable pricing, magically justifying itself by Friday",
+                "HOW MUCH?!?!?",
+                "Slack Comment: [a Drag Race GIF that perfectly illustrates something]",
+                "“Only we can do this, and then forget to add it to the Mac”",
+                "Split view is now over 45% less discoverable",
+                "New headphones being used for a conference call",
+                "New headphones being used by someone on a skateboard",
+                "Something is described as “pretty Epic”",
+                "Who could this evil, data-hungry, unnamed advertising company be?!?",
+                "“Ok. Fine. We’re building a car”",
+                "Pro-motion scrolling described as “silky smooth” or some such",
+                "New low end iPad gets talked up like a kid who “tries their best” at school sports.",
+                "“People love the notch - it’s part of iPhone”",
+                "“Beautiful new color”",
+                "Always on screen power demands offset by no-one actually going anywhere",
+                "Vague changes to glass/metal composition completely changes how the iPhone feels",
+                "Vague changes to glass/metal composition completely changes how the product breaks"
+                ]
+
+            function shuffle(array) {
+                var currentIndex = array.length;
+                var temporaryValue;
+                var randomIndex;
+                while (0 !== currentIndex) {
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                }
+                return array;
+            }
+
+            var shuffled_strings = shuffle(strings);
+            el_playcard = document.getElementById('playCard');
+            for(var row = 0; row < 5; row += 1) {
+                el_row = el_playcard.insertRow(-1);
+
+                for(var col = 0; col < 5; col += 1) {
+                    el_cell = el_row.insertCell(0);
+                    if(row == 2 && col == 2) {
+                        el_cell.innerHTML = 'Free<br /><br /><br />Space';
+                        el_cell.classList.add('marked');
+                        el_cell.classList.add('marked-free');
+                    }
+                    else {
+                        el_cell.innerHTML = shuffled_strings.pop();
+                        el_cell.addEventListener('click', mark_cell, false);
+                    }
+                }
+            }
+
+            var bingo_counter = 0;
+
+            var marked_sound = new Audio('static/sounds/eep.wav');
+            marked_sound.load();
+            var bingo_sound = new Audio('static/sounds/indigo.wav');
+            bingo_sound.load();
+
+            function mark_cell(cell) {
+                cell.srcElement.removeEventListener('click', mark_cell);
+                cell.srcElement.classList.add('marked');
+                bingo_counter++;
+
+                if(bingo_counter === 24) {
+                    document.querySelectorAll('td').forEach(function (e) {
+                        e.classList.add('rotate-out');
+                    });
+                    bingo_sound.play();
+                    window.setTimeout(function() {
+                        play_again = document.getElementById('bingo');
+                        play_again.classList.add('bounce-in');
+                        play_again.style.display = 'block';
+
+                        bingoCard = document.getElementById('bingoCard');
+                        bingoCard.style.visibility = 'hidden';
+                    }, 400);
+                }
+                else {
+                    marked_sound.play();
+                }
+            }
+        </script>
+    </body>
+</html>

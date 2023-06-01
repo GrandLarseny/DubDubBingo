@@ -51,7 +51,8 @@
         </table>
 
         <footer>
-            <a class="btn btn-outline-dark mr-2" href="?">New Bingo Card</a>
+            <a class="btn btn-outline-dark mr-2" href="?">New Bingo Card</a>&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="soundOn" name="soundOn" onclick="" checked /> <label for="soundOn">Sound On</label>
             <p class="mt-4 small">
                 The most important thing is to keep the most important thing the most important thing. We love you, Rocketeers.
             </p>
@@ -162,26 +163,34 @@
         bingo_sound.load();
 
         function mark_cell(cell) {
+            let playSound = document.getElementById('soundOn').checked;
+
             if (cell.srcElement.classList.contains('marked-free')) {
                 return;
             }
-            
+
             if (cell.srcElement.hasAttribute('isMarked')) {
                 bingo_counter--;
                 cell.srcElement.classList.remove('marked');
                 cell.srcElement.removeAttribute('isMarked');
-                unmarked_sound.play();
+
+                if (playSound) {
+                    unmarked_sound.play();
+                }
             } else {
                 cell.srcElement.classList.add('marked');
                 cell.srcElement.setAttribute('isMarked', true);
-                
+
                 bingo_counter++;
 
                 if (bingo_counter === 24) {
                     document.querySelectorAll('td').forEach(function(e) {
                         e.classList.add('rotate-out');
                     });
-                    bingo_sound.play();
+
+                    if (playSound) {
+                        bingo_sound.play();
+                    }
                     window.setTimeout(function() {
                         play_again = document.getElementById('bingo');
                         play_again.classList.add('bounce-in');
@@ -191,7 +200,9 @@
                         bingoCard.style.visibility = 'hidden';
                     }, 400);
                 } else {
-                    marked_sound.play();
+                    if (playSound) {
+                        marked_sound.play();
+                    }
                 }
             }
         }

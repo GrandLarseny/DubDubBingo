@@ -6540,6 +6540,12 @@ table#bingoCard td.marked-free div {
     line-height: 1em
 }
 
+table#bingoCard td.hilight {
+    animation: 1s slidein;
+    background-color: #FFD700;
+    color: #111111;
+}
+
 #bingo {
     display: none;
     color: var(--br-red)
@@ -6575,26 +6581,6 @@ a {
 
 .bounce-in {
     animation-name: bounce-in;
-    animation-fill-mode: both;
-    animation-duration: 1s
-}
-
-@keyframes rotate-out {
-    0% {
-        transform-origin: center center;
-        transform: rotate(0);
-        opacity: 1
-    }
-
-    100% {
-        transform-origin: center center;
-        transform: rotate(200deg);
-        opacity: 0
-    }
-}
-
-.rotate-out {
-    animation-name: rotate-out;
     animation-fill-mode: both;
     animation-duration: 1s
 }

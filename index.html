@@ -52,7 +52,7 @@
 
         <footer>
             <a class="btn btn-outline-dark mr-2" href="?">New Bingo Card</a>&nbsp;&nbsp;&nbsp;
-            <input type="checkbox" id="soundOn" name="soundOn" onclick="" checked /> <label for="soundOn">Sound On</label>
+            <input type="checkbox" id="soundOn" name="soundOn" onclick="" /> <label for="soundOn">Sound On</label>
             <p class="mt-4 small">
                 The most important thing is to keep the most important thing the most important thing. We love you, Rocketeers.
             </p>
@@ -220,36 +220,66 @@
             
         function checkRow(rowNum) {
             //if any cell in the row is false, no bingo
+            var cells = Array();
             for (var i = 0; i < 5; i += 1) {
                 if (!selectedCells[rowNum][i]) return false; 
+                
+                cells.push(cellAt(rowNum, i));
             }
+            
+            celebrate(cells);
             return true;
         }
 
         function checkCol(colNum) {
             //if any cell in the col is false, no bingo
+            var cells = Array();
             for (var i = 0; i < 5; i += 1) {
                 if (!selectedCells[i][colNum]) return false;
+                
+                cells.push(cellAt(i, colNum));
             }
+            
+            celebrate(cells);
             return true;
         }
 
         function checkDiag(rowNum, colNum) {
             if(rowNum==colNum){
+                var cells = Array();
                 for (var i = 0; i < 5; i += 1) {
                     if (!selectedCells[i][i]) return false;
+                    
+                    cells.push(cellAt(i, i));
                 }
+                
+                celebrate(cells);
                 return true;
             }
             
             if((rowNum+colNum)==4){
+                var cells = Array();
                 for (var i = 0; i < 5; i += 1) {
                     if (!selectedCells[i][4-i]) return false;
+                    
+                    cells.push(cellAt(i, i));
                 }
+
+                celebrate(cells);
                 return true;
             }
 
             return false;
+        }
+        
+        function celebrate(cells) {
+            cells.forEach((cell) => {
+                cell.classList.add('hilight');
+            });
+        }
+        
+        function cellAt(row, col) {
+            return document.querySelector('td[col="'+col+'"][row="'+row+'"]');
         }
     </script>
 </body>

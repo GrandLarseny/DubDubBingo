@@ -52,7 +52,7 @@
 
         <footer>
             <a class="btn btn-outline-dark mr-2" href="?">New Bingo Card</a>&nbsp;&nbsp;&nbsp;
-            <input type="checkbox" id="soundOn" name="soundOn" onclick="" checked /> <label for="soundOn">Sound On</label>
+            <input type="checkbox" id="soundOn" name="soundOn" onclick="" /> <label for="soundOn">Sound On</label>
             <p class="mt-4 small">
                 The most important thing is to keep the most important thing the most important thing. We love you, Rocketeers.
             </p>
@@ -60,6 +60,9 @@
     </div>
 
     <script>
+        let numRows = 5
+        let numColumns = 5
+        
         strings = [
             "HairForceOne",
             "Any mention of the Crack Marketing Team",
@@ -136,12 +139,12 @@
 
         var shuffled_strings = shuffle(strings);
         el_playcard = document.getElementById('playCard');
-        for (var row = 0; row < 5; row += 1) {
+        for (var row = 0; row < numRows; row += 1) {
             el_row = el_playcard.insertRow(-1);
 
-            for (var col = 0; col < 5; col += 1) {
+            for (var col = 0; col < numColumns; col += 1) {
                 el_cell = el_row.insertCell(0);
-                if (row == 2 && col == 2) {
+                if (row == Math.floor(numRows / 2) && col == Math.floor(numColumns / 2)) {
                     el_cell.innerHTML = 'Free<br /><br /><br />Space';
                     el_cell.classList.add('marked');
                     el_cell.classList.add('marked-free');
@@ -150,6 +153,9 @@
                     el_cell.innerHTML = shuffled_strings.pop();
                     el_cell.addEventListener('click', mark_cell, false);
                 }
+                el_cell.id = cardId(row, col);
+                el_cell.setAttribute("row", row);
+                el_cell.setAttribute("col", col);
             }
         }
 
@@ -163,8 +169,6 @@
         bingo_sound.load();
 
         function mark_cell(cell) {
-            let playSound = document.getElementById('soundOn').checked;
-
             if (cell.srcElement.classList.contains('marked-free')) {
                 return;
             }
@@ -174,37 +178,61 @@
                 cell.srcElement.classList.remove('marked');
                 cell.srcElement.removeAttribute('isMarked');
 
-                if (playSound) {
-                    unmarked_sound.play();
-                }
+                play(unmarked_sound);
             } else {
                 cell.srcElement.classList.add('marked');
                 cell.srcElement.setAttribute('isMarked', true);
 
                 bingo_counter++;
 
-                if (bingo_counter === 24) {
-                    document.querySelectorAll('td').forEach(function(e) {
-                        e.classList.add('rotate-out');
-                    });
-
-                    if (playSound) {
-                        bingo_sound.play();
-                    }
-                    window.setTimeout(function() {
-                        play_again = document.getElementById('bingo');
-                        play_again.classList.add('bounce-in');
-                        play_again.style.display = 'block';
-
-                        bingoCard = document.getElementById('bingoCard');
-                        bingoCard.style.visibility = 'hidden';
-                    }, 400);
+                let winning = winningLine()
+                if (winning != undefined) {
+                    console.log('Celebrating ' + winning)
+                    celebrateGoodTimes(winning);
                 } else {
-                    if (playSound) {
-                        marked_sound.play();
-                    }
+                    play(marked_sound);
                 }
             }
+        }
+        
+        function play(sound) {
+            let playSound = document.getElementById('soundOn').checked;
+            
+            if (playSound) {
+                sound.play();
+            }
+        }
+        
+        function celebrateGoodTimes(winning) {
+            winning.forEach(function(e) {
+                e.classList.add('rotate-out');
+            });
+            
+            play(bingo_sound);
+        }
+        
+        function winningLine() {
+            // Check for horizontal winning line
+            for(var row = 0; row < numRows; row++) {
+                let rowMarked = document.querySelectorAll('td[isMarked][row="'+row+'"]');
+                
+                if (rowMarked.length == numColumns) {
+                    return Array.from(rowMarked)
+                }
+            }
+            
+            // Check for vertical winning line
+            for(var col = 0; col < numColumns; col++) {
+                let colMarked = document.querySelectorAll('td[isMarked][col="'+col+'"]');
+                
+                if (colMarked.length == numRows) {
+                    return Array.from(colMarked)
+                }
+            }
+        }
+        
+        function cardId(row, col) {
+            return 'card' + col + '.' + row;
         }
     </script>
 </body>

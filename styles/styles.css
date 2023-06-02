@@ -4,6 +4,7 @@
     --purple: #6f42c1;
     --pink: #e83e8c;
     --red: #dc3545;
+    --br-red: #e2231a;
     --orange: #fd7e14;
     --yellow: #ffc107;
     --green: #28a745;
@@ -63,7 +64,12 @@ body {
     line-height: 1.5;
     color: #212529;
     text-align: left;
-    background-color: #fff
+    background-color: #DDDDDD
+}
+
+.dark-mode{
+    color: white;
+    background-color: #212529
 }
 
 [tabindex="-1"]:focus {
@@ -2545,15 +2551,15 @@ fieldset:disabled a.btn {
     box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5)
 }
 
-.btn-outline-dark {
-    color: #343a40;
-    border-color: #343a40
+.btn-outline-dark{
+    color: var(--br-red);
+    border-color: var(--br-red);
 }
 
-.btn-outline-dark:hover {
+.btn-outline-dark:hover{
     color: #fff;
-    background-color: #343a40;
-    border-color: #343a40
+    background-color: var(--br-red);
+    border-color: var(--br-red);
 }
 
 .btn-outline-dark:focus,
@@ -6534,7 +6540,11 @@ table#bingoCard td.marked-free div {
 
 #bingo {
     display: none;
-    color: red
+    color: var(--br-red)
+}
+
+.title {
+    color: var(--br-red)
 }
 
 a {

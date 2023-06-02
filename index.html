@@ -33,7 +33,7 @@
     </script>
 </head>
 
-<body id="mainContainer" class="dark-mode">
+<body>
     <div class="container-fluid">
         <header>
             <h1 class="my-4 display-4 title">Apple Keynote Bingo!</h1>
@@ -53,9 +53,6 @@
         <footer>
             <a class="btn btn-outline-dark mr-2" href="?">New Bingo Card</a>&nbsp;&nbsp;&nbsp;
             <input type="checkbox" id="soundOn" name="soundOn" onclick="" checked /> <label for="soundOn">Sound On</label>
-            &nbsp;   
-            &nbsp; 
-            <input type="checkbox" id="darkMode" name="darkMode" onclick="" checked /> <label for="darkMode">Dark Mode</label>
             <p class="mt-4 small">
                 The most important thing is to keep the most important thing the most important thing. We love you, Rocketeers.
             </p>
@@ -77,7 +74,7 @@
             "“bezel”",
             "“Developers love the App Store, providing that there is no follow up discussion on the matter”",
             "Tim Cook",
-            "Craig Federighi",
+            "Craig Federighi being more technical than you expect",
             "Tim Cook’s thin, watery smile",
             "Advertisement for a product",
             "Here comes the money talk!",
@@ -144,8 +141,6 @@
             }
             return array;
         }
-
-        document.getElementById('darkMode').addEventListener('click', toggleDarkMode);
 
         var shuffled_strings = shuffle(strings);
         el_playcard = document.getElementById('playCard');
@@ -255,18 +250,6 @@
             }
 
             return false;
-        }
-
-        function toggleDarkMode() {
-            let isDarkMode = document.getElementById('darkMode').checked;
-            let body = document.getElementById('mainContainer');
-
-            if (!isDarkMode) {
-                body.classList.remove("dark-mode");
-            }
-            else {
-                body.classList.add("dark-mode");
-            }
         }
     </script>
 </body>

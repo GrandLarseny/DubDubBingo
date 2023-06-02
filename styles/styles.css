@@ -67,9 +67,11 @@ body {
     background-color: #DDDDDD
 }
 
-.dark-mode{
-    color: white;
-    background-color: #212529
+@media (prefers-color-scheme: dark) {
+    body {
+        color: white;
+        background-color: #212529
+    }
 }
 
 [tabindex="-1"]:focus {
@@ -2551,12 +2553,12 @@ fieldset:disabled a.btn {
     box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5)
 }
 
-.btn-outline-dark{
+.btn-outline-dark {
     color: var(--br-red);
     border-color: var(--br-red);
 }
 
-.btn-outline-dark:hover{
+.btn-outline-dark:hover {
     color: #fff;
     background-color: var(--br-red);
     border-color: var(--br-red);

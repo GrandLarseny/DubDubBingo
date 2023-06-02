@@ -40,7 +40,7 @@
             <h2 class="mb-4 h5">Play along, Rocketeers</h2>
         </header>
 
-        <div id="bingo">
+        <div id="bingo" class="bingo">
             <h1 class="my-4 display-1">BINGO!</h1>
             <a class="btn btn-dark" href="?">Play again?</a>
         </div>
@@ -207,18 +207,11 @@
         }
 
         function displayBingo(){
-            document.querySelectorAll('td').forEach(function(e) {
-                        e.classList.add('rotate-out');
-                    });
-
-                    window.setTimeout(function() {
-                        play_again = document.getElementById('bingo');
-                        play_again.classList.add('bounce-in');
-                        play_again.style.display = 'block';
-
-                        //bingoCard = document.getElementById('bingoCard');
-                        //bingoCard.style.visibility = 'hidden';
-                    }, 400);
+            window.setTimeout(function() {
+                play_again = document.getElementById('bingo');
+                play_again.classList.add('bounce-in');
+                play_again.style.display = 'block';
+            }, 400);
         }
 
         function isBingo(rowNum, colNum) {

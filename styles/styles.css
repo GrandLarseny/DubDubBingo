@@ -6533,7 +6533,8 @@ table#bingoCard td.marked-free div {
 }
 
 #bingo {
-    display: none
+    display: none;
+    color: red
 }
 
 a {

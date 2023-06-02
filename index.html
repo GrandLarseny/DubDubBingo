@@ -120,6 +120,14 @@
             "Vague changes to glass/metal composition completely changes how the product breaks"
         ]
 
+        let selectedCells = [
+            [false, false, false, false, false],
+            [false, false, false, false, false],
+            [false, false, true, false, false],
+            [false, false, false, false, false],
+            [false, false, false, false, false]
+        ];
+
         function shuffle(array) {
             var currentIndex = array.length;
             var temporaryValue;
@@ -140,7 +148,7 @@
             el_row = el_playcard.insertRow(-1);
 
             for (var col = 0; col < 5; col += 1) {
-                el_cell = el_row.insertCell(0);
+                el_cell = el_row.insertCell(col);
                 if (row == 2 && col == 2) {
                     el_cell.innerHTML = 'Free<br /><br /><br />Space';
                     el_cell.classList.add('marked');
@@ -150,10 +158,11 @@
                     el_cell.innerHTML = shuffled_strings.pop();
                     el_cell.addEventListener('click', mark_cell, false);
                 }
+                //make sure we can tell what cell was clicked in the handler
+                el_cell.setAttribute("row", row);
+                el_cell.setAttribute("col", col);
             }
         }
-
-        var bingo_counter = 0;
 
         var marked_sound = new Audio('./sounds/eep.wav');
         marked_sound.load();
@@ -169,8 +178,11 @@
                 return;
             }
 
+            let colNum = parseInt(cell.srcElement.getAttribute("col"));
+            let rowNum = parseInt(cell.srcElement.getAttribute("row"));
+            selectedCells[rowNum][colNum] = !selectedCells[rowNum][colNum];
+
             if (cell.srcElement.hasAttribute('isMarked')) {
-                bingo_counter--;
                 cell.srcElement.classList.remove('marked');
                 cell.srcElement.removeAttribute('isMarked');
 
@@ -181,30 +193,70 @@
                 cell.srcElement.classList.add('marked');
                 cell.srcElement.setAttribute('isMarked', true);
 
-                bingo_counter++;
-
-                if (bingo_counter === 24) {
-                    document.querySelectorAll('td').forEach(function(e) {
-                        e.classList.add('rotate-out');
-                    });
-
+                if (isBingo(rowNum,colNum)) {
                     if (playSound) {
                         bingo_sound.play();
                     }
-                    window.setTimeout(function() {
-                        play_again = document.getElementById('bingo');
-                        play_again.classList.add('bounce-in');
-                        play_again.style.display = 'block';
-
-                        bingoCard = document.getElementById('bingoCard');
-                        bingoCard.style.visibility = 'hidden';
-                    }, 400);
+                    displayBingo();
                 } else {
                     if (playSound) {
                         marked_sound.play();
                     }
                 }
             }
+        }
+
+        function displayBingo(){
+            document.querySelectorAll('td').forEach(function(e) {
+                        e.classList.add('rotate-out');
+                    });
+
+                    window.setTimeout(function() {
+                        play_again = document.getElementById('bingo');
+                        play_again.classList.add('bounce-in');
+                        play_again.style.display = 'block';
+
+                        //bingoCard = document.getElementById('bingoCard');
+                        //bingoCard.style.visibility = 'hidden';
+                    }, 400);
+        }
+
+        function isBingo(rowNum, colNum) {
+            return checkRow(rowNum)||checkCol(colNum)||checkDiag(rowNum,colNum);
+        }
+            
+        function checkRow(rowNum) {
+            //if any cell in the row is false, no bingo
+            for (var i = 0; i < 5; i += 1) {
+                if (!selectedCells[rowNum][i]) return false; 
+            }
+            return true;
+        }
+
+        function checkCol(colNum) {
+            //if any cell in the col is false, no bingo
+            for (var i = 0; i < 5; i += 1) {
+                if (!selectedCells[i][colNum]) return false;
+            }
+            return true;
+        }
+
+        function checkDiag(rowNum, colNum) {
+            if(rowNum==colNum){
+                for (var i = 0; i < 5; i += 1) {
+                    if (!selectedCells[i][i]) return false;
+                }
+                return true;
+            }
+            
+            if((rowNum+colNum)==4){
+                for (var i = 0; i < 5; i += 1) {
+                    if (!selectedCells[i][4-i]) return false;
+                }
+                return true;
+            }
+
+            return false;
         }
     </script>
 </body>
